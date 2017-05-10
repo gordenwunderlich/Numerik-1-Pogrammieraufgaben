@@ -1,0 +1,25 @@
+set terminal windows 0;
+set log xy;
+set xrange [10:1000];
+set xlabel "N"
+set ylabel "Fehler"
+plot "/Users/Gorden/Desktop/Numerik/A2/dataN1.dat" with lines, \
+"/Users/Gorden/Desktop/Numerik/A2/dataN2.dat" with lines, \
+"/Users/Gorden/Desktop/Numerik/A2/dataN3.dat" with lines, \
+"/Users/Gorden/Desktop/Numerik/A2/dataN4.dat" with lines, \
+"/Users/Gorden/Desktop/Numerik/A2/dataN5.dat" with lines, \
+"/Users/Gorden/Desktop/Numerik/A2/dataN6.dat" with lines, \
+;
+set terminal windows 1;
+set log xy;
+set xrange [0.0002:0.1];
+set xlabel "Zeit"
+set ylabel "Fehler"
+plot "/Users/Gorden/Desktop/Numerik/A2/dataT1.dat" with lines, \
+"/Users/Gorden/Desktop/Numerik/A2/dataT2.dat" with lines, \
+"/Users/Gorden/Desktop/Numerik/A2/dataT3.dat" with lines, \
+"/Users/Gorden/Desktop/Numerik/A2/dataT4.dat" with lines, \
+"/Users/Gorden/Desktop/Numerik/A2/dataT5.dat" with lines, \
+"/Users/Gorden/Desktop/Numerik/A2/dataT6.dat" with lines, \
+;
+pause -1;
