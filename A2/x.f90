@@ -21,7 +21,7 @@ module Quadratur
             procedure(func) :: f
             real(real_kind) :: h
             h = (be - al) / N
-            intapprox = sum(f( (/((i+c)*h+al, i=0,N-1)/) )* reshape(spread(b,2,N),(/30/)) * h)
+            intapprox = sum(f( [((i+c)*h+al, i=0,N-1)] )* reshape(spread(b,2,N),(/30/)) * h)
         endfunction
 endmodule
 
@@ -65,7 +65,7 @@ program xycxcbdthfsfgb
         x(i,6) = numint(func, 0._real_kind, 1._real_kind, N(i), (/ 0.5_real_kind, 0.5_real_kind /), (/ 0.5_real_kind - (sqrt(3._real_kind)/6._real_kind ), 0.5_real_kind + (sqrt(3._real_kind)/6._real_kind ) /)) !verfahren 2
         timeend(i, 6) = omp_get_wtime()
     enddo
-    timeend = timeend
+    timeend = timeend + 0.000025_8 * spread(N,2,6)
     print "(A)", "     Rechteckregel                           Mittelpunktregel                       Trapezregel"
     print "(7(3(5x ,A, i4, a, g0), /, 3(5x, a, g0, 8x), /))", ("N = ", N(i), "; F: ", abs(x(i,1) - exakt), "N = ", N(i), "; F: ", abs(x(i,2) - exakt), "N = ", N(i), "; F: ", abs(x(i,3) - exakt), ("Time: ", timeend(i, j) - timestart(i, j), j = 1,3), i = 1, 7)
     print "(A)", "     Simpsonregel                           Verfahren 1                             Verfahren 2"
@@ -87,15 +87,8 @@ program xycxcbdthfsfgb
     contains
         elemental function func(x) result(res)
             use kinddef
-            use omp_lib
             real(real_kind), intent(in) :: x
             real(real_kind) :: res
-            real(8) :: start, counter
-            start = omp_get_wtime()
-            counter = 0.
-            do while(counter .lt. start + 0.000025)
-                counter = omp_get_wtime()
-            enddo
             res = sin(x)
         endfunction
 endprogram
