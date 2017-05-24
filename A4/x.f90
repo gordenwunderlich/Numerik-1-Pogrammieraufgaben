@@ -18,8 +18,8 @@ module Fassregel
                 A = l(size(l)/2+1)
                 B = (cos(phi) * l - A/2)
                 H = sin(phi) * l
-                res%vol = sum((B(:size(B) - 1) + B(2:)) / 2._real_kind * (h(:size(h) - 1) - h(2:))) ** 2 * PI / 2
-                res%points = reshape([B,H],[2,size(b)], order = [2,1])
+                res%vol = sum(((B(:size(B) - 1) + B(2:)) / 2._real_kind) ** 2 * (h(:size(h) - 1) - h(2:))) * PI
+                res%points = reshape([H,B],[2,size(b)], order = [2,1])
             endfunction
 endmodule
 
@@ -93,9 +93,23 @@ program xycxcbdthfsfgb
     res1 = kepler(phi1, l1)
     print *, res1%vol
     print *, ext1
+    print *, abs(res1%vol - ext1)
     res2 = kepler(phi2, l2)
     print *, res2%vol
     print *, ext2
-    open(newunit = i, file = "")
-    write "(*(2f10.5, /))", i, res1%points
+    print *, abs(res2%vol - ext2)
+    print *
+    open(newunit = i, file = "kepler1.dat")
+    j = size(res1%points, 2)
+    write (i, "(*(2f10.5, /))", advance = "no") res1%points(:, j:1:-1)
+    write (i, "(*(2f10.5, /))", advance = "no") res1%points * spread([1, -1], 2, j)
+    write (i, "(*(2f10.5, /))") res1%points(:, j)
+    close(i)
+    open(newunit = i, file = "kepler2.dat")
+    j = size(res2%points, 2)
+    write (i, "(*(2f10.5, /))", advance = "no") res2%points(:, j:1:-1)
+    write (i, "(*(2f10.5, /))", advance = "no") res2%points * spread([1, -1], 2, j)
+    write (i, "(*(2f10.5, /))") res2%points(:, j)
+    close(i)
+    call System("gnuplot /Users/Gorden/Desktop/Numerik/Numerik-1-Pogrammieraufgaben/A4/plotscript.txt")
 endprogram
